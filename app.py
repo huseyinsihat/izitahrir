@@ -12,7 +12,14 @@ if spaces is not None:
         return "hazir"
 
 
-from app.serve import main
+from app.serve import main as serve_main
+
+
+def main() -> None:
+    if spaces is not None:
+        gpu_ready()
+    serve_main()
+
 
 if __name__ == "__main__":
     main()
