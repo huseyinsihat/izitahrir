@@ -1,0 +1,12 @@
+.git
+.venv
+modeller
+__pycache__
+.pytest_cache
+datasets/ground_truth/documents
+datasets/ground_truth/catalog.sqlite*
+outputs
+models/*.mlmodel
+models/*.safetensors
+models/*.ckpt
+*.log

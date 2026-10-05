@@ -1,0 +1,17 @@
+.venv/
+modeller/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.env
+models/*.mlmodel
+models/*.safetensors
+models/*.ckpt
+datasets/ground_truth/catalog.sqlite*
+datasets/ground_truth/documents/
+datasets/auxiliary/**
+!datasets/auxiliary/.gitkeep
+outputs/**
+!outputs/.gitkeep
+*.log

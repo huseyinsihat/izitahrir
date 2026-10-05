@@ -1,0 +1,66 @@
+paths:
+  models_dir: models
+  ground_truth_dir: datasets/ground_truth
+  documents_dir: datasets/ground_truth/documents
+  catalog_db: datasets/ground_truth/catalog.sqlite
+  outputs_dir: outputs
+  training_dir: outputs/training
+  evaluation_dir: outputs/evaluation
+
+models:
+  recognition: modeller/kraken/kraken-ppocrv6-medium/medium.safetensors
+  recognition_url: https://zenodo.org/records/21788410/files/medium.safetensors?download=1
+  recognition_md5: e3411a453ce3b9e9efae3f8631d85762
+  muharaf: models/muharaf_rec_best.mlmodel
+  recognition_finetuned: outputs/training/best.safetensors
+  segmentation: models/blla.mlmodel
+  muharaf_url: https://zenodo.org/records/14295489/files/muharaf_rec_best.mlmodel?download=1
+  muharaf_md5: 01515059028bbda9c96d35b3054139a5
+  muharaf_doi: 10.5281/zenodo.14295489
+  blla_url: https://zenodo.org/records/14602569/files/blla.mlmodel?download=1
+  blla_md5: 0e3f0e1c5e954c8b673ef5dbd0865058
+  blla_doi: 10.5281/zenodo.14602569
+
+inference:
+  text_direction: horizontal-rl
+  device: cpu
+  precision: 32-true
+  batch_size: 4
+  num_line_workers: 0
+
+data:
+  training_verification_statuses:
+    - reviewed
+    - expert_verified
+  training_sources:
+    - user_correction
+    - tahrir
+  auxiliary_sources:
+    - openiti_makhzan
+  default_script: siyakat
+  default_source: user_correction
+  prediction_source: htr_prediction
+
+splits:
+  train_pages: []
+  validation_pages: []
+  test_pages: []
+  external_test_documents: []
+
+training:
+  epochs: 50
+  batch_size: 4
+  resize: add
+  quit: early
+  lag: 10
+  min_epochs: 5
+  learning_rate: 0.0001
+  min_reviewed_lines: 20
+  weights_format: safetensors
+  normalization: NFC
+  normalize_whitespace: false
+  augment: true
+  num_workers: 1
+
+unicode:
+  normalization: NFC

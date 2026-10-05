@@ -1,0 +1,23 @@
+x-app: &app
+  build: .
+  image: tarihhtr:dev
+  env_file:
+    - .env.example
+  environment:
+    CONFIG_PATH: /app/config.yaml
+    PYTHONPATH: /app
+  volumes:
+    - ./:/app
+
+services:
+  api:
+    <<: *app
+    command: python -m uvicorn app.api.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+
+  ui:
+    <<: *app
+    command: python -m app.ui.gradio_app
+    ports:
+      - "7860:7860"
