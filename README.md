@@ -1,6 +1,7 @@
 ---
 title: İz-i Tahrir
-sdk: docker
+sdk: gradio
+sdk_version: 5.50.0
 app_port: 7860
 ---
 
