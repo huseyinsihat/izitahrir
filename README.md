@@ -1,6 +1,14 @@
+---
+title: İz-i Tahrir
+sdk: docker
+app_port: 7860
+---
+
 # İz-i Tahrir
 
 Tahrir defteri sayfasını satırlara ayırıp okur.
+
+Açık adres: https://huseyinsihat-izitahrir.hf.space
 
 ## Çalıştırma
 

@@ -5,26 +5,39 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PYTHONPATH=/app \
     CONFIG_PATH=/app/config.yaml \
-    GRADIO_ANALYTICS_ENABLED=False
+    GRADIO_ANALYTICS_ENABLED=False \
+    TARIHHTR_DEVICE=cpu \
+    GRADIO_PORT=7860 \
+    API_PORT=7860
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libglib2.0-0 \
         libgl1 \
         libgomp1 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -m -u 1000 user \
+    && mkdir -p /app \
+    && chown user:user /app
 
-WORKDIR /app
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 
 COPY requirements.txt /tmp/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
-    && pip install --no-cache-dir -r /tmp/requirements.txt \
+RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && pip install --no-cache-dir --force-reinstall torch --index-url https://download.pytorch.org/whl/cpu \
     && python -c "import torch, kraken; print('torch', torch.__version__, 'kraken', kraken.__version__)"
 
-COPY . /app
+USER user
 
-EXPOSE 8000 7860
+ENV HOME=/home/user
 
-CMD ["python", "-m", "uvicorn", "app.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+WORKDIR /app
+
+COPY --chown=user:user . /app
+
+RUN python scripts/download_models.py
+
+EXPOSE 7860
+
+CMD ["python", "-m", "app.serve"]
